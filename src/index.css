@@ -11,3 +11,51 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
 }
+{box-sizing: border-box;}
+
+.form-popup {
+  display: block;
+  width: 400px;
+  margin: 100px auto;
+  border: 3px solid #f1f1f1;
+}
+.form-popup h2 {
+  text-align: center;
+  width: 350px;
+}
+.form-popup h3 {
+  text-align: center;
+  color: red;
+}
+.form-container {
+  margin: auto;
+  max-width: 370px;
+  padding: 10px;
+  background-color: white;
+}
+.form-container input[type=text], .form-container input[type=password] {
+  width: 320px;
+  font-size: 17px;
+  padding: 15px;
+  margin: 5px 0 22px 0;
+  border: none;
+  background: #f1f1f1;
+}
+.form-container input[type=text]:focus, .form-container input[type=password]:focus {
+  background-color: #ddd;
+  outline: none;
+}
+.form-container .btn {
+  background-color: #4CAF50;
+  color: white;
+  padding: 16px 20px;
+  border: none;
+  cursor: pointer;
+  width: 350px;
+  font-size: 17px;
+  margin-bottom:10px;
+  opacity: 0.8;
+}
+.form-container .btn:hover, .open-button:hover {
+  opacity: 1;
+}
