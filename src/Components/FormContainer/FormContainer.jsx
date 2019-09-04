@@ -1,53 +1,57 @@
 import React, {Component} from 'react';
-import {Form} from './Form';
+import {PhoneInput} from "./PhoneInput";
+const PHONE_MAX_LENGHT = 13;
+const PHONE_CODS = ['29', '44', '25', '33']
 
 export class FormContainer extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            value: '+',
-            phoneCods: ['29', '44', '25', '33'],
+            value: '',
             isCodeCountryErr: false,
             isCodeOperErr: false,
-            maxLenght: 13,
         }
         this.handleChange = this.handleChange.bind(this);
         this.handleClick = this.handleClick.bind(this);
     }
     returnPhoneCode(code) {
-        for (let i = 0; i < this.state.phoneCods.length; i++) {
-            if (code.slice(4, 6) === this.state.phoneCods[i]) return true}
+        for (let i = 0; i < PHONE_CODS.length; i++) {
+            if (code === PHONE_CODS[i]){ return true }
+        }
     }
     checkCountryCode(countryCode) {
-        (countryCode && countryCode !== '+375') ?
-            this.setState(({state}) => ({isCodeCountryErr: true}))
-            : this.setState(({state}) => ({codeCountry: countryCode, isCodeCountryErr: false}));
+        return countryCode && countryCode !== '+375';
     }
     checkOperatorCode(operCode) {
-        (operCode.length >= 6 && !this.returnPhoneCode(operCode)) ?
-            this.setState(({state}) => ({isCodeOperErr: true}))
-            : this.setState(({state}) => ({isCodeOperErr: false}))
+       if (operCode && !this.returnPhoneCode(operCode)) {
+           this.setState(({state}) => ({isCodeOperErr: true}))
+       } else {
+           this.setState(({state}) => ({isCodeOperErr: false}))
+       }
     }
     handleChange(event) {
-        const targetVal = event.target.value;
-        const countryCode = targetVal.length >= 4 && targetVal.slice(0, 4);
-        this.setState(({state}) => ({value: targetVal}));
-        this.checkCountryCode(countryCode);
-        this.checkOperatorCode(targetVal);
+        const {value} = event.target;
+        const countryCode = value.length >= 4 && value.slice(0, 4);
+        const operCode = value.length >= 6 && value.slice(4, 6);
+        const isCodeCountryErr = this.checkCountryCode(countryCode);
+        this.checkOperatorCode(operCode);
+        this.setState({value, isCodeCountryErr});
     }
+
     handleClick(event) { event.preventDefault(); }
 
     render() {
+        const isChangeInput = this.handleChange;
         return (
             <div className="form-popup">
-                <Form clss="form-container">
+                <form className="form-container">
                     <h2>Введите номер телефона</h2>
                     {this.state.isCodeCountryErr && <h3>Введите правильный код страны</h3>}
                     {this.state.isCodeOperErr && <h3>Оператор с таким кодом отсутствует</h3>}
-                    <input type='text' value={this.state.value} placeholder="+375291234567"
-                           onChange={this.handleChange} maxLength={this.state.maxLenght} />
+                    <PhoneInput type='text' value={this.state.value} holder="+375449379992"
+                           onChange={isChangeInput} length={PHONE_MAX_LENGHT} />
                     <button type="submit" className="btn" onClick={this.handleClick}>Отправить</button>
-                </Form>
+                </form>
             </div>
         )
     }
